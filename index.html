@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support Dream Emulator</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --gb-body: #8b9bb4;
+            --gb-dark: #1a1a2e;
+            --gb-screen: #8bac0f;
+            --gb-pink: #e63950;
+            --gb-blue: #0f3460;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: #0f0f1a;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* ── Stars background ── */
+        .stars {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .star {
+            position: absolute;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle var(--d) ease-in-out infinite alternate;
+        }
+        @keyframes twinkle {
+            from { opacity: 0.1; transform: scale(1); }
+            to   { opacity: 0.9; transform: scale(1.4); }
+        }
+
+        /* ── Hero ── */
+        .hero {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 60px 24px 40px;
+        }
+
+        .gb-sprite {
+            font-size: 80px;
+            display: inline-block;
+            animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 20px rgba(139,172,15,0.6));
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(-3deg); }
+            50%       { transform: translateY(-16px) rotate(3deg); }
+        }
+
+        .pixel-title {
+            font-family: 'Press Start 2P', monospace;
+            font-size: clamp(14px, 4vw, 22px);
+            color: #8bac0f;
+            margin: 24px 0 8px;
+            text-shadow: 3px 3px 0 #306230;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { text-shadow: 3px 3px 0 #306230; }
+            50%       { text-shadow: 3px 3px 0 #306230, 0 0 20px #8bac0f; }
+        }
+
+        .hero-sub {
+            font-size: 1rem;
+            color: #a1a1c2;
+            max-width: 500px;
+            margin: 0 auto 16px;
+            line-height: 1.7;
+        }
+
+        /* ── Dev card ── */
+        .dev-card {
+            position: relative;
+            z-index: 1;
+            background: linear-gradient(135deg, #1a1a3e, #16213e);
+            border: 1px solid #2a2a5e;
+            border-radius: 20px;
+            max-width: 540px;
+            margin: 0 auto 40px;
+            padding: 28px 24px;
+            text-align: center;
+        }
+        .dev-avatar {
+            font-size: 56px;
+            display: inline-block;
+            animation: wiggle 4s ease-in-out infinite;
+        }
+        @keyframes wiggle {
+            0%, 90%, 100% { transform: rotate(0deg); }
+            92%  { transform: rotate(-8deg); }
+            96%  { transform: rotate(8deg); }
+        }
+        .dev-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin: 10px 0 4px;
+            color: #fff;
+        }
+        .dev-role {
+            font-size: 0.85rem;
+            color: #8b8baa;
+            margin-bottom: 16px;
+        }
+        .speech-bubble {
+            background: #252550;
+            border-radius: 14px;
+            padding: 16px 20px;
+            font-size: 0.9rem;
+            color: #c8c8e8;
+            line-height: 1.6;
+            position: relative;
+            text-align: left;
+        }
+        .speech-bubble::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 10px solid transparent;
+            border-bottom-color: #252550;
+            border-top: 0;
+        }
+
+        /* ── Progress bar ── */
+        .progress-section {
+            position: relative;
+            z-index: 1;
+            max-width: 540px;
+            margin: 0 auto 40px;
+            padding: 0 24px;
+        }
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.78rem;
+            color: #8b8baa;
+            margin-bottom: 8px;
+        }
+        .progress-label span:first-child { color: #e63950; font-weight: 600; }
+        .progress-bar-bg {
+            background: #1a1a3e;
+            border-radius: 99px;
+            height: 18px;
+            overflow: hidden;
+            border: 1px solid #2a2a5e;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #e63950, #ff6b6b);
+            border-radius: 99px;
+            transition: width 2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .progress-bar-fill::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 1.5s ease-in-out infinite;
+        }
+        @keyframes shimmer {
+            to { left: 100%; }
+        }
+        .progress-caption {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #6e6e8e;
+            margin-top: 6px;
+        }
+
+        /* ── Donate options ── */
+        /* ── Hire card ── */
+        .hire-card {
+            position: relative;
+            z-index: 1;
+            max-width: 540px;
+            margin: 0 auto 32px;
+            padding: 0 24px;
+        }
+        .hire-inner {
+            background: linear-gradient(135deg, #0a2540, #0e3a5c);
+            border: 1px solid #1a5276;
+            border-radius: 20px;
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .hire-inner:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0,119,181,0.3);
+        }
+        .hire-icon {
+            font-size: 2.2rem;
+            flex-shrink: 0;
+            animation: wave 2.5s ease-in-out infinite;
+        }
+        @keyframes wave {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-10deg); }
+            75% { transform: rotate(10deg); }
+        }
+        .hire-text-title {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #58a6ff;
+            margin-bottom: 4px;
+        }
+        .hire-text-desc {
+            font-size: 0.82rem;
+            color: #8b8baa;
+            line-height: 1.5;
+        }
+        .hire-badge {
+            margin-left: auto;
+            background: #0077b5;
+            color: #fff;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 8px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .donate-section {
+            position: relative;
+            z-index: 1;
+            max-width: 540px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 0.75rem;
+            font-family: 'Press Start 2P', monospace;
+            color: #6e6e9e;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        .donate-card {
+            background: linear-gradient(135deg, #1a1a3e, #16213e);
+            border: 1px solid #2a2a5e;
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 16px;
+            transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+        }
+        .donate-card:hover {
+            transform: translateY(-4px);
+            border-color: #4a4a9e;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+        }
+        .donate-card-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+        .donate-icon {
+            font-size: 2rem;
+            width: 52px;
+            height: 52px;
+            background: #252550;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .donate-card-title { font-weight: 700; font-size: 1rem; }
+        .donate-card-desc  { font-size: 0.82rem; color: #8b8baa; margin-top: 2px; }
+
+        .key-row {
+            background: #0d0d20;
+            border-radius: 12px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            border: 1px solid #1e1e40;
+        }
+        .key-val {
+            font-family: "SF Mono", "Menlo", monospace;
+            font-size: 0.78rem;
+            color: #8bac0f;
+            word-break: break-all;
+            flex: 1;
+        }
+        .copy-btn {
+            background: #252550;
+            color: #fff;
+            border: 1px solid #3a3a7e;
+            border-radius: 8px;
+            padding: 7px 14px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        .copy-btn:hover   { background: #3a3a7e; }
+        .copy-btn.copied  { background: #306230; border-color: #8bac0f; color: #8bac0f; }
+
+        /* ── Fun facts ticker ── */
+        .ticker-wrap {
+            position: relative;
+            z-index: 1;
+            background: #e63950;
+            overflow: hidden;
+            padding: 10px 0;
+            margin-bottom: 40px;
+        }
+        .ticker {
+            display: flex;
+            white-space: nowrap;
+            animation: ticker 20s linear infinite;
+        }
+        .ticker span {
+            font-size: 0.78rem;
+            font-family: 'Press Start 2P', monospace;
+            color: #fff;
+            padding: 0 32px;
+        }
+        @keyframes ticker {
+            from { transform: translateX(0); }
+            to   { transform: translateX(-50%); }
+        }
+
+        /* ── Thank you toast ── */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #306230;
+            color: #8bac0f;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.7rem;
+            padding: 14px 24px;
+            border-radius: 12px;
+            border: 2px solid #8bac0f;
+            transition: transform 0.4s ease;
+            z-index: 999;
+            white-space: nowrap;
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); }
+
+        footer {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 24px;
+            font-size: 0.8rem;
+            color: #3a3a5e;
+            border-top: 1px solid #1a1a3e;
+        }
+        footer a { color: #4a4a8e; text-decoration: none; }
+        footer a:hover { color: #8b8bce; }
+    </style>
+</head>
+<body>
+
+<!-- Stars -->
+<div class="stars" id="stars"></div>
+
+<!-- Hero -->
+<div class="hero">
+    <div class="gb-sprite">🎮</div>
+    <div class="pixel-title">SUPPORT DREAM EMU</div>
+    <p class="hero-sub">
+        This app was built with love, caffeine, and a dangerous amount of late nights.<br>
+        Your support helps keep the pixels lit! ✨
+    </p>
+</div>
+
+<!-- Ticker -->
+<div class="ticker-wrap">
+    <div class="ticker">
+        <span>⚡ BUILT BY ONE HUMAN &nbsp;·&nbsp;</span>
+        <span>☕ POWERED BY COFFEE &nbsp;·&nbsp;</span>
+        <span>🐛 BUGS FIXED AT 2AM &nbsp;·&nbsp;</span>
+        <span>💸 RENT DUE EVERY MONTH &nbsp;·&nbsp;</span>
+        <span>🎮 MORE EMULATORS PLANNED &nbsp;·&nbsp;</span>
+        <span>🙏 YOUR TIP MATTERS &nbsp;·&nbsp;</span>
+        <span>⚡ BUILT BY ONE HUMAN &nbsp;·&nbsp;</span>
+        <span>☕ POWERED BY COFFEE &nbsp;·&nbsp;</span>
+        <span>🐛 BUGS FIXED AT 2AM &nbsp;·&nbsp;</span>
+        <span>💸 RENT DUE EVERY MONTH &nbsp;·&nbsp;</span>
+        <span>🎮 MORE EMULATORS PLANNED &nbsp;·&nbsp;</span>
+        <span>🙏 YOUR TIP MATTERS &nbsp;·&nbsp;</span>
+    </div>
+</div>
+
+<!-- Dev card -->
+<div class="dev-card">
+    <div class="dev-avatar">🧑‍💻</div>
+    <div class="dev-name">Thalisson Gabriel</div>
+    <div class="dev-role">Solo Developer · iOS · Game Boy enthusiast</div>
+    <div class="speech-bubble">
+        "Hey! I built Dream Emulator from scratch — every opcode, every pixel, every sound channel.
+        No team, no funding, just me and my trusty MacBook.<br><br>
+        If you're enjoying the nostalgia trip, even a tiny contribution goes a long way.
+        It pays for coffee ☕, server costs, and most importantly —
+        <strong style="color:#8bac0f">it tells me to keep going</strong>. 🚀"
+    </div>
+</div>
+
+<!-- Progress bar -->
+<div class="progress-section">
+    <div class="progress-label">
+        <span>☕ Coffee-o-meter</span>
+        <span id="pb-label">Loading...</span>
+    </div>
+    <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progress-fill"></div>
+    </div>
+    <div class="progress-caption" id="pb-caption">Calculating caffeine deficit...</div>
+</div>
+
+<!-- Hire me -->
+<div class="hire-card">
+    <a class="hire-inner" href="https://www.linkedin.com/in/thalisson-gabriel/" target="_blank" rel="noopener">
+        <div class="hire-icon">💼</div>
+        <div>
+            <div class="hire-text-title">Psst... are you a millionaire? 🤑</div>
+            <div class="hire-text-desc">
+                If some rich soul wants to hire a passionate iOS developer
+                who builds Game Boy emulators for fun — I'm very open to that conversation.
+            </div>
+        </div>
+        <div class="hire-badge">LinkedIn →</div>
+    </a>
+</div>
+
+<!-- Donate -->
+<div class="donate-section">
+    <div class="section-title">CHOOSE YOUR POWER-UP</div>
+
+    <!-- PIX -->
+    <div class="donate-card">
+        <div class="donate-card-header">
+            <div class="donate-icon">🇧🇷</div>
+            <div>
+                <div class="donate-card-title">PIX &nbsp;·&nbsp; Brazil</div>
+                <div class="donate-card-desc">Instant transfer · random key · any amount</div>
+            </div>
+        </div>
+        <div class="key-row">
+            <span class="key-val" id="pix-key">b1ceebd5-2649-4ec0-8c7d-286acc706811</span>
+            <button class="copy-btn" onclick="copyKey('pix-key', this)">Copy</button>
+        </div>
+    </div>
+
+    <!-- PayPal -->
+    <div class="donate-card">
+        <div class="donate-card-header">
+            <div class="donate-icon">💙</div>
+            <div>
+                <div class="donate-card-title">PayPal &nbsp;·&nbsp; International</div>
+                <div class="donate-card-desc">Send to email · Friends &amp; Family · any currency</div>
+            </div>
+        </div>
+        <div class="key-row">
+            <span class="key-val" id="paypal-key">thalissongabriel1999@gmail.com</span>
+            <button class="copy-btn" onclick="copyKey('paypal-key', this)">Copy</button>
+        </div>
+    </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">✓ COPIED TO CLIPBOARD!</div>
+
+<footer>
+    &copy; 2026 Dream Emulator &nbsp;·&nbsp; Thalisson Gabriel &nbsp;·&nbsp;
+    <a href="https://tgdssm.github.io/Dream-Emulator-Privacy-Policy/">Privacy Policy</a>
+</footer>
+
+<script>
+    // Stars
+    const starsEl = document.getElementById('stars');
+    for (let i = 0; i < 120; i++) {
+        const s = document.createElement('div');
+        s.className = 'star';
+        const size = Math.random() * 2.5 + 0.5;
+        s.style.cssText = `
+            width:${size}px; height:${size}px;
+            top:${Math.random()*100}%;
+            left:${Math.random()*100}%;
+            --d:${(Math.random()*3+1).toFixed(1)}s;
+        `;
+        starsEl.appendChild(s);
+    }
+
+    // Progress bar fun
+    const messages = [
+        [8,  "Almost empty 😭", "Send help. And coffee."],
+        [14, "One sip in... ☕", "Not enough to fix even one bug"],
+        [21, "Getting there... 🫙", "Still running on fumes"],
+        [29, "1 coffee in the tank ☕", "Need ~6 more to ship the next update"],
+        [35, "Two coffees away from greatness ✨", "Almost functional as a developer"],
+    ];
+    const pick = messages[Math.floor(Math.random() * messages.length)];
+    setTimeout(() => {
+        document.getElementById('progress-fill').style.width = pick[0] + '%';
+        document.getElementById('pb-label').textContent = pick[0] + '%';
+        document.getElementById('pb-caption').textContent = pick[2];
+    }, 500);
+
+    // Copy
+    let toastTimer;
+    function copyKey(id, btn) {
+        const text = document.getElementById(id).textContent.trim();
+        navigator.clipboard.writeText(text).then(() => {
+            btn.textContent = '✓ Copied!';
+            btn.classList.add('copied');
+            setTimeout(() => {
+                btn.textContent = 'Copy';
+                btn.classList.remove('copied');
+            }, 2000);
+            const toast = document.getElementById('toast');
+            toast.classList.add('show');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
+        });
+    }
+</script>
+</body>
+</html>
