@@ -11,7 +11,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            background: #0a0a14;
+            background: #0a0a0a;
             color: #fff;
             overflow-x: hidden;
         }
@@ -24,26 +24,26 @@
             pointer-events: none;
         }
 
-        .parallax-layer { will-change: transform; transition: transform 0.1s linear; }
+        /* ── Scanlines ── */
+        body::after {
+            content: '';
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.06) 2px, rgba(0,0,0,0.06) 4px);
+            pointer-events: none;
+            z-index: 200;
+        }
 
         .lang-bar {
-            position: fixed;
-            top: 16px; right: 16px;
-            z-index: 100;
-            display: flex;
-            gap: 6px;
+            position: fixed; top: 16px; right: 16px;
+            z-index: 100; display: flex; gap: 6px;
         }
         .lang-btn {
             background: rgba(15,15,26,0.85);
             border: 1px solid rgba(139,172,15,0.3);
-            color: #fff;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.78rem;
-            cursor: pointer;
-            backdrop-filter: blur(10px);
-            transition: all 0.2s;
-            font-family: inherit;
+            color: #fff; padding: 6px 14px; border-radius: 20px;
+            font-size: 0.78rem; cursor: pointer;
+            backdrop-filter: blur(10px); transition: all 0.2s; font-family: inherit;
         }
         .lang-btn.active { background: var(--gb-green); border-color: var(--gb-green); color: #000; font-weight: 700; }
         .lang-btn:hover:not(.active) { border-color: var(--gb-green); }
@@ -51,57 +51,40 @@
         [data-lang] { display: none; }
         [data-lang].visible { display: block; }
 
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.04) 2px, rgba(0,0,0,0.04) 4px);
-            pointer-events: none;
-            z-index: 200;
-        }
-
         .hero {
-            position: relative;
-            z-index: 2;
-            text-align: center;
-            padding: 80px 24px 40px;
+            position: relative; z-index: 2;
+            text-align: center; padding: 80px 24px 40px;
         }
         .gb-sprite {
-            font-size: 90px;
-            display: inline-block;
+            font-size: 90px; display: inline-block;
             animation: float 3s ease-in-out infinite;
             filter: drop-shadow(0 0 30px rgba(139,172,15,0.8));
         }
         @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(-3deg); }
-            50%       { transform: translateY(-20px) rotate(3deg); }
+            0%,100% { transform: translateY(0px) rotate(-3deg); }
+            50%      { transform: translateY(-20px) rotate(3deg); }
         }
         .pixel-title {
             font-family: 'Press Start 2P', monospace;
             font-size: clamp(12px, 3.5vw, 20px);
-            color: var(--gb-green);
-            margin: 28px 0 12px;
+            color: var(--gb-green); margin: 28px 0 12px;
             text-shadow: 3px 3px 0 #306230;
-            animation: glitch 5s ease-in-out infinite;
+            animation: glitch 6s ease-in-out infinite;
         }
         @keyframes glitch {
-            0%, 92%, 100% { text-shadow: 3px 3px 0 #306230; transform: translate(0); }
-            93% { text-shadow: -2px 0 #e63950, 2px 2px 0 #0ff; transform: translate(-2px, 0); }
-            94% { text-shadow: 2px 0 #e63950, -2px 2px 0 #0ff; transform: translate(2px, 0); }
+            0%,90%,100% { text-shadow: 3px 3px 0 #306230; transform: translate(0); }
+            91% { text-shadow: -2px 0 #e63950, 2px 2px 0 #0ff; transform: translate(-2px,0); }
+            92% { text-shadow: 2px 0 #e63950, -2px 2px 0 #0ff; transform: translate(2px,0); }
+            93% { text-shadow: 3px 3px 0 #306230; transform: translate(0); }
+            94% { text-shadow: -3px 0 #0ff; transform: translate(-1px,1px); }
             95% { text-shadow: 3px 3px 0 #306230; transform: translate(0); }
-            96% { text-shadow: -3px 0 #0ff; transform: translate(-1px, 1px); }
-            97% { text-shadow: 3px 3px 0 #306230; transform: translate(0); }
         }
-        .hero-sub { font-size: 0.97rem; color: #a1a1c2; max-width: 500px; margin: 0 auto 16px; line-height: 1.7; }
+        .hero-sub { font-size: 0.97rem; color: #a1a1c2; max-width: 500px; margin: 0 auto; line-height: 1.7; }
 
         .ticker-wrap {
-            position: relative;
-            z-index: 2;
-            background: var(--accent);
-            overflow: hidden;
-            padding: 10px 0;
-            margin-bottom: 40px;
+            position: relative; z-index: 2;
+            background: var(--accent); overflow: hidden;
+            padding: 10px 0; margin-bottom: 40px;
             box-shadow: 0 0 30px rgba(230,57,80,0.4);
         }
         .ticker { display: flex; white-space: nowrap; animation: ticker 12s linear infinite; }
@@ -111,103 +94,102 @@
         .dev-card, .progress-section, .hire-card, .donate-section { position: relative; z-index: 2; }
 
         .dev-card {
-            background: linear-gradient(135deg, rgba(26,26,62,0.9), rgba(22,33,62,0.9));
-            border: 1px solid #2a2a5e;
-            border-radius: 24px;
-            max-width: 560px;
-            margin: 0 auto 40px;
-            padding: 32px 28px;
-            text-align: center;
-            backdrop-filter: blur(12px);
-            box-shadow: 0 8px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
+            background: linear-gradient(135deg, rgba(26,26,62,0.92), rgba(22,33,62,0.92));
+            border: 1px solid #2a2a5e; border-radius: 24px;
+            max-width: 560px; margin: 0 auto 40px; padding: 32px 28px;
+            text-align: center; backdrop-filter: blur(14px);
+            box-shadow: 0 8px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.05);
             transition: transform 0.3s, box-shadow 0.3s;
         }
-        .dev-card:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 40px rgba(139,172,15,0.1); }
+        .dev-card:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(0,0,0,0.7), 0 0 40px rgba(139,172,15,0.12); }
         .dev-avatar { font-size: 60px; display: inline-block; animation: wiggle 4s ease-in-out infinite; }
         @keyframes wiggle {
-            0%, 88%, 100% { transform: rotate(0deg) scale(1); }
-            90%  { transform: rotate(-10deg) scale(1.05); }
-            94%  { transform: rotate(10deg) scale(1.05); }
-            98%  { transform: rotate(-5deg) scale(1.02); }
+            0%,88%,100% { transform: rotate(0) scale(1); }
+            90% { transform: rotate(-10deg) scale(1.05); }
+            94% { transform: rotate(10deg) scale(1.05); }
+            98% { transform: rotate(-5deg) scale(1.02); }
         }
-        .dev-name  { font-weight: 700; font-size: 1.1rem; margin: 12px 0 4px; }
-        .dev-role  { font-size: 0.82rem; color: #8b8baa; margin-bottom: 20px; }
+        .dev-name { font-weight: 700; font-size: 1.1rem; margin: 12px 0 4px; }
+        .dev-role {
+            font-size: 0.82rem;
+            color: #a0a0be;
+            margin-bottom: 20px;
+        }
         .speech-bubble {
-            background: rgba(37,37,80,0.8);
-            border-radius: 16px;
-            padding: 18px 22px;
-            font-size: 0.9rem;
-            color: #c8c8e8;
-            line-height: 1.7;
-            text-align: left;
-            position: relative;
-            border: 1px solid rgba(139,172,15,0.15);
+            background: rgba(37,37,80,0.85); border-radius: 16px;
+            padding: 18px 22px; font-size: 0.9rem; color: #c8c8e8; line-height: 1.7;
+            text-align: left; position: relative; border: 1px solid rgba(139,172,15,0.15);
         }
         .speech-bubble::before {
-            content: '';
-            position: absolute;
-            top: -10px; left: 50%;
+            content: ''; position: absolute; top: -10px; left: 50%;
             transform: translateX(-50%);
-            border: 10px solid transparent;
-            border-bottom-color: rgba(37,37,80,0.8);
-            border-top: 0;
+            border: 10px solid transparent; border-bottom-color: rgba(37,37,80,0.85); border-top: 0;
         }
 
         .progress-section { max-width: 560px; margin: 0 auto 40px; padding: 0 24px; }
-        .progress-label { display: flex; justify-content: space-between; font-size: 0.78rem; color: #8b8baa; margin-bottom: 8px; }
-        .progress-label span:first-child { color: var(--accent); font-weight: 600; }
+        .progress-label { display: flex; justify-content: space-between; font-size: 0.78rem; color: #b3b3c9; margin-bottom: 8px; }
+        .progress-label span:first-child { color: #8bac0f; font-weight: 600; }
         .progress-bar-bg { background: #0d0d20; border-radius: 99px; height: 20px; overflow: hidden; border: 1px solid #2a2a5e; box-shadow: inset 0 2px 6px rgba(0,0,0,0.5); }
         .progress-bar-fill {
             height: 100%; width: 0%;
             background: linear-gradient(90deg, #e63950, #ff6b6b, #ffb347);
-            border-radius: 99px;
-            transition: width 2.5s cubic-bezier(.4,0,.2,1);
+            border-radius: 99px; transition: width 2.5s cubic-bezier(.4,0,.2,1);
             position: relative; overflow: hidden;
         }
         .progress-bar-fill::after {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
             animation: shimmer 1.5s ease-in-out infinite;
         }
         @keyframes shimmer { to { left: 100%; } }
-        .progress-caption { text-align: center; font-size: 0.75rem; color: #6e6e8e; margin-top: 8px; font-style: italic; }
+        .progress-caption {
+            text-align: center; font-size: 0.75rem;
+            color: #9090aa;
+            margin-top: 8px; font-style: italic;
+        }
 
         .hire-card { max-width: 560px; margin: 0 auto 32px; padding: 0 24px; }
         .hire-inner {
-            background: linear-gradient(135deg, rgba(10,37,64,0.9), rgba(14,58,92,0.9));
-            border: 1px solid #1a5276;
-            border-radius: 20px;
-            padding: 24px;
+            background: linear-gradient(135deg, rgba(10,37,64,0.92), rgba(14,58,92,0.92));
+            border: 1px solid #1a5276; border-radius: 20px; padding: 24px;
             display: flex; align-items: center; gap: 18px;
-            text-decoration: none; color: inherit;
-            transition: transform 0.2s, box-shadow 0.2s;
-            backdrop-filter: blur(12px);
+            text-decoration: none; color: inherit; transition: transform 0.2s, box-shadow 0.2s;
+            backdrop-filter: blur(14px);
         }
         .hire-inner:hover { transform: translateY(-5px); box-shadow: 0 16px 50px rgba(0,119,181,0.35); }
         .hire-icon { font-size: 2.2rem; flex-shrink: 0; animation: wave 2.5s ease-in-out infinite; }
-        @keyframes wave { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(-12deg); } 75% { transform: rotate(12deg); } }
+        @keyframes wave { 0%,100%{transform:rotate(0)} 25%{transform:rotate(-12deg)} 75%{transform:rotate(12deg)} }
         .hire-text-title { font-weight: 700; font-size: 0.95rem; color: #58a6ff; margin-bottom: 4px; }
-        .hire-text-desc  { font-size: 0.82rem; color: #8b8baa; line-height: 1.5; }
-        .hire-badge { margin-left: auto; background: #0077b5; color: #fff; font-size: 0.72rem; font-weight: 700; padding: 8px 14px; border-radius: 10px; white-space: nowrap; flex-shrink: 0; box-shadow: 0 4px 12px rgba(0,119,181,0.4); }
+        .hire-text-desc {
+            font-size: 0.82rem;
+            color: #a0a0be;
+            line-height: 1.5;
+        }
+        .hire-badge { margin-left: auto; background: #0077b5; color: #fff; font-size: 0.72rem; font-weight: 700; padding: 8px 14px; border-radius: 10px; white-space: nowrap; flex-shrink: 0; }
 
         .donate-section { max-width: 560px; margin: 0 auto; padding: 0 24px 100px; }
-        .section-title { text-align: center; font-size: 0.68rem; font-family: 'Press Start 2P', monospace; color: #4a4a7e; letter-spacing: 3px; margin-bottom: 20px; }
+        .section-title {
+            text-align: center; font-size: 0.68rem;
+            font-family: 'Press Start 2P', monospace;
+            color: #8bac0f;
+            letter-spacing: 3px; margin-bottom: 20px;
+            text-shadow: 0 0 12px rgba(139,172,15,0.4);
+        }
         .donate-card {
-            background: linear-gradient(135deg, rgba(26,26,62,0.9), rgba(22,33,62,0.9));
-            border: 1px solid #2a2a5e;
-            border-radius: 20px; padding: 24px; margin-bottom: 16px;
-            backdrop-filter: blur(12px);
+            background: linear-gradient(135deg, rgba(26,26,62,0.92), rgba(22,33,62,0.92));
+            border: 1px solid #2a2a5e; border-radius: 20px; padding: 24px; margin-bottom: 16px;
+            backdrop-filter: blur(14px); cursor: pointer;
             transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
-            cursor: pointer;
         }
         .donate-card:hover { transform: translateY(-5px); border-color: #4a4a9e; box-shadow: 0 16px 50px rgba(0,0,0,0.5); }
         .donate-card-header { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
         .donate-icon { font-size: 2rem; width: 54px; height: 54px; background: rgba(37,37,80,0.8); border-radius: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .donate-card-title { font-weight: 700; font-size: 1rem; }
-        .donate-card-desc  { font-size: 0.82rem; color: #8b8baa; margin-top: 2px; }
+        .donate-card-desc {
+            font-size: 0.82rem;
+            color: #b0b0cc;
+            margin-top: 2px;
+        }
         .key-row { background: rgba(13,13,32,0.9); border-radius: 12px; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; gap: 10px; border: 1px solid #1e1e40; }
         .key-val { font-family: "SF Mono","Menlo",monospace; font-size: 0.78rem; color: var(--gb-green); word-break: break-all; flex: 1; }
         .copy-btn { background: rgba(37,37,80,0.9); color: #fff; border: 1px solid #3a3a7e; border-radius: 8px; padding: 7px 14px; font-size: 0.78rem; font-weight: 600; cursor: pointer; white-space: nowrap; transition: all 0.2s; flex-shrink: 0; }
@@ -215,28 +197,33 @@
         .copy-btn.copied { background: #306230; border-color: var(--gb-green); color: var(--gb-green); }
 
         .toast {
-            position: fixed;
-            bottom: 30px; left: 50%;
+            position: fixed; bottom: 30px; left: 50%;
             transform: translateX(-50%) translateY(120px);
             background: #1a3a1a; color: var(--gb-green);
             font-family: 'Press Start 2P', monospace; font-size: 0.65rem;
-            padding: 14px 24px; border-radius: 12px;
-            border: 2px solid var(--gb-green);
+            padding: 14px 24px; border-radius: 12px; border: 2px solid var(--gb-green);
             transition: transform 0.4s cubic-bezier(.34,1.56,.64,1);
-            z-index: 999; white-space: nowrap;
-            box-shadow: 0 0 30px rgba(139,172,15,0.4);
+            z-index: 999; white-space: nowrap; box-shadow: 0 0 30px rgba(139,172,15,0.4);
         }
         .toast.show { transform: translateX(-50%) translateY(0); }
 
-        footer { position: relative; z-index: 2; text-align: center; padding: 28px 24px; font-size: 0.82rem; color: #2a2a4e; border-top: 1px solid #1a1a3e; }
-        footer a { color: #4a4a8e; text-decoration: none; }
-        footer a:hover { color: #8b8bce; }
-
         .coin-burst { position: fixed; pointer-events: none; font-size: 1.4rem; z-index: 500; animation: coinFly 1s ease-out forwards; }
         @keyframes coinFly {
-            0%   { opacity: 1; transform: translate(0,0) scale(1) rotate(0deg); }
-            100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(0.5) rotate(360deg); }
+            0%   { opacity:1; transform: translate(0,0) scale(1) rotate(0deg); }
+            100% { opacity:0; transform: translate(var(--dx),var(--dy)) scale(0.5) rotate(360deg); }
         }
+
+        footer {
+            position: relative; z-index: 2;
+            text-align: center; padding: 28px 24px;
+            font-size: 0.82rem;
+            color: #a0a0c0;
+            background: rgba(8, 8, 18, 0.95);
+            backdrop-filter: blur(12px);
+            border-top: 1px solid #2a2a5e;
+        }
+        footer a { color: #7b9fd4; text-decoration: none; }
+        footer a:hover { color: #a0c0ff; }
 
         @media (max-width: 480px) { .hire-badge { display: none; } .hero { padding-top: 60px; } }
     </style>
@@ -250,7 +237,7 @@
     <button class="lang-btn" onclick="setLang('pt')">🇧🇷 PT</button>
 </div>
 
-<div class="hero parallax-layer" data-speed="0.3">
+<div class="hero">
     <div class="gb-sprite">🎮</div>
     <div class="pixel-title">
         <span data-lang="en" class="visible">SUPPORT DREAM EMU</span>
@@ -301,20 +288,20 @@
     </div>
 </div>
 
-<div class="dev-card parallax-layer" data-speed="0.15">
+<div class="dev-card">
     <div class="dev-avatar">🧑‍💻</div>
     <div class="dev-name">Thalisson Gabriel</div>
     <div class="dev-role">Solo Developer · iOS · Game Boy enthusiast</div>
     <div class="speech-bubble">
         <span data-lang="en" class="visible">
-            Hey! I built Dream Emulator from scratch — every opcode, every pixel, every sound channel.
+            Hey! I built Dream Emulator from scratch, every opcode, every pixel, every sound channel.
             No team, no funding, just me and my trusty MacBook.<br><br>
             If you're enjoying the nostalgia trip, even a tiny contribution goes a long way.
             It pays for coffee ☕, and most importantly,
             <strong style="color:#8bac0f">it tells me to keep going</strong>. 🚀
         </span>
         <span data-lang="pt">
-            Ei! Construí o Dream Emulator do zero — cada opcode, cada pixel, cada canal de som.
+            Ei! Construí o Dream Emulator do zero, cada opcode, cada pixel, cada canal de som.
             Sem equipe, sem financiamento, só eu e meu fiel MacBook.<br><br>
             Se você está curtindo essa viagem nostálgica, qualquer contribuição faz toda a diferença.
             Paga o café ☕ e, o mais importante,
@@ -346,8 +333,8 @@
                 <span data-lang="pt">Psst... você é milionário? 🤑</span>
             </div>
             <div class="hire-text-desc">
-                <span data-lang="en" class="visible">If some rich soul wants to hire a passionate iOS developer who builds Game Boy emulators for fun — I'm very open to that conversation.</span>
-                <span data-lang="pt">Se alguma alma rica quiser contratar um desenvolvedor iOS apaixonado que constrói emuladores de Game Boy por diversão — estou muito aberto a essa conversa.</span>
+                <span data-lang="en" class="visible">If some rich soul wants to hire a passionate iOS developer who builds Game Boy emulators for fun, I'm very open to that conversation.</span>
+                <span data-lang="pt">Se alguma alma rica quiser contratar um desenvolvedor iOS apaixonado que constrói emuladores de Game Boy por diversão, estou muito aberto a essa conversa.</span>
             </div>
         </div>
         <div class="hire-badge">LinkedIn →</div>
@@ -373,7 +360,7 @@
         </div>
         <div class="key-row">
             <span class="key-val" id="pix-key">b1ceebd5-2649-4ec0-8c7d-286acc706811</span>
-            <button class="copy-btn" onclick="event.stopPropagation(); copyKey('pix-key', this)">Copy</button>
+            <button class="copy-btn" onclick="event.stopPropagation();copyKey('pix-key',this)">Copy</button>
         </div>
     </div>
 
@@ -390,7 +377,7 @@
         </div>
         <div class="key-row">
             <span class="key-val" id="paypal-key">thalissongabriel1999@gmail.com</span>
-            <button class="copy-btn" onclick="event.stopPropagation(); copyKey('paypal-key', this)">Copy</button>
+            <button class="copy-btn" onclick="event.stopPropagation();copyKey('paypal-key',this)">Copy</button>
         </div>
     </div>
 </div>
@@ -409,136 +396,442 @@
 </footer>
 
 <script>
-// ── Canvas ──
+// ═══════════════════════════════════════════════
+//  GAME BOY PLATFORMER BACKGROUND SIMULATION
+// ═══════════════════════════════════════════════
 const canvas = document.getElementById('bgCanvas');
 const ctx    = canvas.getContext('2d');
 let W, H;
+
 function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
 resize();
-window.addEventListener('resize', resize);
+window.addEventListener('resize', () => { resize(); resetWorld(); });
 
-const stars = Array.from({length: 160}, () => ({
-    x: Math.random() * 2000, y: Math.random() * 1200,
-    r: Math.random() * 1.5 + 0.3,
-    speed: Math.random() * 0.15 + 0.05,
-    blink: Math.random() * Math.PI * 2,
-    blinkSpeed: Math.random() * 0.03 + 0.01
-}));
+// GB palette
+const GB = { bg:'#0d150d', d3:'#0f380f', d2:'#306230', d1:'#8bac0f', d0:'#9bbc0f' };
 
-const JET_PIXELS = [
-    [0,0,0,1,0,0,0,0],[0,1,1,1,1,1,0,0],[1,1,1,1,1,1,1,1],[0,1,1,1,1,1,0,0],[0,0,0,1,0,0,0,0]
+// ── Tile helpers ──
+const T = 20; // tile size px
+function groundY() { return H - T * 3; }
+
+function tile(x, y, color, highlight, shadow) {
+    ctx.fillStyle = color;
+    ctx.fillRect(~~x, ~~y, T, T);
+    ctx.fillStyle = highlight || GB.d0;
+    ctx.fillRect(~~x+1, ~~y+1, T-2, 2);
+    ctx.fillRect(~~x+1, ~~y+1, 2, T-2);
+    ctx.fillStyle = shadow || GB.d3;
+    ctx.fillRect(~~x+T-2, ~~y+1, 1, T-2);
+    ctx.fillRect(~~x+1, ~~y+T-1, T-2, 1);
+}
+
+function pxl(x, y, w, h, c) { ctx.fillStyle = c; ctx.fillRect(~~x, ~~y, w, h); }
+
+// ── Sprites (pixel art, 2px per pixel) ──
+const S = 2; // sprite scale
+
+// Player walk A
+const SPR_WALK_A = [
+    [0,0,1,1,1,0,0],
+    [0,1,1,0,1,1,0],
+    [0,0,1,1,1,0,0],
+    [0,1,1,1,1,1,0],
+    [1,1,0,1,0,1,1],
+    [0,0,1,1,1,0,0],
+    [0,1,0,0,0,1,0],
+    [0,1,0,0,0,1,0],
 ];
-const JET_COLOR = ['#4a9eff','#2a7eff','#8bac0f','#4a9eff','#4a9eff'];
+// Player walk B
+const SPR_WALK_B = [
+    [0,0,1,1,1,0,0],
+    [0,1,1,0,1,1,0],
+    [0,0,1,1,1,0,0],
+    [0,1,1,1,1,1,0],
+    [1,1,0,1,0,1,1],
+    [0,0,1,1,1,0,0],
+    [0,0,1,0,1,0,0],
+    [0,1,0,0,0,1,0],
+];
+// Player jump
+const SPR_JUMP = [
+    [0,0,1,1,1,0,0],
+    [0,1,1,0,1,1,0],
+    [0,0,1,1,1,0,0],
+    [1,1,1,1,1,1,1],
+    [1,0,0,1,0,0,1],
+    [0,0,1,1,1,0,0],
+    [0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0],
+];
+// Enemy A
+const SPR_ENEMY_A = [
+    [0,1,1,1,1,0],
+    [1,0,1,1,0,1],
+    [1,1,1,1,1,1],
+    [0,1,1,1,1,0],
+    [1,0,0,0,0,1],
+];
+const SPR_ENEMY_B = [
+    [0,1,1,1,1,0],
+    [1,1,0,0,1,1],
+    [1,1,1,1,1,1],
+    [0,1,1,1,1,0],
+    [0,0,1,1,0,0],
+];
 
-function drawJet(x, y, scale, flip) {
-    const s = scale;
+function drawSprite(spr, x, y, sc, colors, flipX) {
     ctx.save();
-    if (flip) { ctx.translate(x + 8*4*s, y); ctx.scale(-1,1); x = 0; y = 0; }
-    JET_PIXELS.forEach((row, ri) => row.forEach((px, ci) => {
-        if (px) { ctx.fillStyle = JET_COLOR[ri]; ctx.fillRect(Math.round((flip?0:x)+ci*4*s), Math.round(y+ri*4*s), Math.round(4*s), Math.round(4*s)); }
+    if (flipX) { ctx.translate(x + spr[0].length * sc, 0); ctx.scale(-1, 1); x = 0; }
+    spr.forEach((row, ri) => row.forEach((px_, ci) => {
+        if (!px_) return;
+        ctx.fillStyle = Array.isArray(colors) ? colors[Math.min(ri, colors.length-1)] : colors;
+        ctx.fillRect(~~((flipX?0:x)+ci*sc), ~~(y+ri*sc), sc, sc);
     }));
-    const flameX = flip ? x + 8*4*s : x - 6*s;
-    const baseY  = y + 2*4*s;
-    const fc = ['#ff6b00','#ffb347','#ff3300'];
-    ctx.fillStyle = fc[Math.floor(Date.now()/80) % 3];
-    ctx.fillRect(Math.round(flameX), Math.round(baseY), Math.round(6*s), Math.round(4*s));
-    ctx.fillStyle = fc[(Math.floor(Date.now()/80)+1) % 3];
-    ctx.fillRect(Math.round(flameX-2*s), Math.round(baseY+s), Math.round(4*s), Math.round(2*s));
     ctx.restore();
 }
 
-const UFO_PIXELS = [
-    [0,0,1,1,1,1,0,0],[0,1,1,1,1,1,1,0],[1,1,0,1,1,0,1,1],[0,1,1,1,1,1,1,0],[0,0,1,0,0,1,0,0]
-];
-function drawUFO(x, y, s) {
-    UFO_PIXELS.forEach((row, ri) => row.forEach((px, ci) => {
-        if (px) {
-            ctx.fillStyle = (ri===2 && (ci===2||ci===5)) ? '#00ffff' : '#cc88ff';
-            ctx.fillRect(Math.round(x+ci*4*s), Math.round(y+ri*4*s), Math.round(4*s), Math.round(4*s));
+// ── World generation ──
+let worldX   = 0;
+let genUntil = 0;
+let platforms  = [];
+let enemies    = [];
+let coins      = [];
+let particles  = [];
+let score      = 0;
+let scoreSmooth = 0;
+
+function resetWorld() {
+    platforms = []; enemies = []; coins = []; particles = [];
+    worldX = 0; genUntil = 0; score = 0; scoreSmooth = 0;
+    player.y = groundY() - 18; player.vy = 0; player.onGround = false;
+    generateChunks();
+}
+
+function generateChunks() {
+    while (genUntil < worldX + W * 3) {
+        const gx = genUntil;
+
+        // Random gap or ground section
+        const hasGap   = gx > 400 && Math.random() > 0.65;
+        const gapW     = hasGap ? T * (2 + Math.floor(Math.random() * 3)) : 0;
+        const sectionW = T * (6 + Math.floor(Math.random() * 8));
+
+        if (!hasGap) {
+            // Floating platform
+            if (Math.random() > 0.3) {
+                const pw  = T * (3 + Math.floor(Math.random() * 4));
+                const ph  = Math.floor(Math.random() * 4) + 2;
+                const py  = groundY() - T * ph;
+                const px_ = gx + T + Math.random() * (sectionW - pw - T);
+                platforms.push({ x: px_, y: py, w: pw });
+
+                // Enemy on platform
+                if (Math.random() > 0.45) {
+                    enemies.push({
+                        x: px_ + pw/2, y: py - 12,
+                        vx: (Math.random()>.5?1:-1)*0.6,
+                        pL: px_+2, pR: px_+pw-2,
+                        frame:0, frameT:0, alive:true
+                    });
+                }
+
+                // Coins above platform
+                const nc = 2 + Math.floor(Math.random()*3);
+                for (let i=0;i<nc;i++) {
+                    coins.push({ x: px_+8+i*(pw/nc), y: py-T*1.5, collected:false, bobT:Math.random()*Math.PI*2 });
+                }
+            }
+
+            // Ground coins
+            if (Math.random() > 0.5) {
+                for (let i=0;i<3;i++) {
+                    coins.push({ x: gx+30+i*28, y: groundY()-T*1.5, collected:false, bobT:Math.random()*Math.PI*2 });
+                }
+            }
         }
-    }));
-    if (Math.floor(Date.now()/500) % 2 === 0) {
-        const grad = ctx.createLinearGradient(x+4*4*s*0.5, y+5*4*s, x+4*4*s*0.5, y+5*4*s+40*s);
-        grad.addColorStop(0,'rgba(200,136,255,0.3)'); grad.addColorStop(1,'rgba(200,136,255,0)');
-        ctx.fillStyle = grad;
+
+        genUntil += sectionW + gapW;
+    }
+
+    // Cull off-screen
+    const cull = worldX - W;
+    platforms = platforms.filter(p => p.x+p.w > cull);
+    enemies   = enemies.filter(e => e.x > cull);
+    coins     = coins.filter(c => c.x > cull);
+}
+
+// ── Player ──
+const player = {
+    x: 0, y: 200, vy: 0, onGround: false,
+    walkFrame:0, walkT:0, jumpLock:0
+};
+const PW=14, PH=16;
+
+function screenX(wx) { return wx - worldX; }
+
+function updatePlayer() {
+    // Fix screen position, world scrolls
+    player.x = worldX + W * 0.18;
+
+    player.vy += 0.45;
+    player.y  += player.vy;
+    player.onGround = false;
+    player.jumpLock = Math.max(0, player.jumpLock-1);
+
+    const gy = groundY();
+
+    // Ground collision
+    if (player.y + PH >= gy) {
+        player.y = gy - PH;
+        player.vy = 0;
+        player.onGround = true;
+    }
+
+    // Platform collision
+    for (const p of platforms) {
+        const sx = screenX(p.x);
+        const px_ = screenX(player.x);
+        if (px_+PW > sx && px_ < sx+p.w && player.vy >= 0 &&
+            player.y+PH > p.y && player.y+PH < p.y+p.h+10) {
+            player.y = p.y - PH;
+            player.vy = 0;
+            player.onGround = true;
+        }
+    }
+
+    // Walk animation
+    if (player.onGround) {
+        player.walkT++;
+        if (player.walkT > 7) { player.walkFrame ^= 1; player.walkT = 0; }
+    }
+}
+
+function playerJump() {
+    if (player.onGround && player.jumpLock === 0) {
+        player.vy = -9.5;
+        player.onGround = false;
+        player.jumpLock = 20;
+    }
+}
+
+// ── AI: auto-jump ──
+function runAI(tick) {
+    if (!player.onGround) return;
+    const px_ = screenX(player.x);
+    const lookDist = 100;
+
+    // Jump over enemies
+    for (const e of enemies) {
+        if (!e.alive) continue;
+        const ex = screenX(e.x);
+        if (ex > px_ && ex < px_ + lookDist) { playerJump(); return; }
+    }
+
+    // Jump toward floating coins
+    for (const c of coins) {
+        if (c.collected) continue;
+        const cx = screenX(c.x);
+        if (cx > px_+10 && cx < px_+lookDist && c.y < player.y-24) { playerJump(); return; }
+    }
+
+    // Random occasional jump for flair
+    if (tick % 180 === 0 && Math.random() > 0.5) { playerJump(); }
+}
+
+// ── Coin collection ──
+function updateCoins(tick) {
+    for (const c of coins) {
+        if (c.collected) continue;
+        c.bobT += 0.04;
+        const cx = screenX(c.x);
+        const px_ = screenX(player.x);
+        if (Math.abs(cx - px_ - PW/2) < 18 && Math.abs(c.y - player.y) < 26) {
+            c.collected = true;
+            score++;
+            for (let i=0;i<6;i++) {
+                particles.push({ x:cx, y:c.y, vx:(Math.random()-.5)*3, vy:-1-Math.random()*2, life:25 });
+            }
+        }
+    }
+}
+
+// ── Enemy update ──
+function updateEnemies() {
+    for (const e of enemies) {
+        e.x += e.vx;
+        if (e.x < e.pL || e.x > e.pR) e.vx *= -1;
+        e.frameT++;
+        if (e.frameT > 16) { e.frame ^= 1; e.frameT = 0; }
+    }
+}
+
+// ── Draw ──
+function drawBackground() {
+    // Sky
+    const grad = ctx.createLinearGradient(0,0,0,groundY());
+    grad.addColorStop(0, '#080f08');
+    grad.addColorStop(1, '#0d1a0d');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, W, H);
+
+    // Distant hills (slow scroll)
+    const hOff = worldX * 0.2;
+    ctx.fillStyle = 'rgba(48,98,48,0.12)';
+    for (let i=0;i<6;i++) {
+        const hx = ((i*260 - hOff % (W+300)) + W+300) % (W+300) - 150;
+        const hw = 160+i%3*50, hh = 50+i%2*35;
         ctx.beginPath();
-        ctx.moveTo(x+2*4*s, y+5*4*s); ctx.lineTo(x+6*4*s, y+5*4*s);
-        ctx.lineTo(x+8*4*s, y+5*4*s+40*s); ctx.lineTo(x, y+5*4*s+40*s);
-        ctx.closePath(); ctx.fill();
+        ctx.arc(hx, groundY()+8, hw/2, Math.PI, 0);
+        ctx.fill();
+    }
+
+    // Stars (fixed, subtle green tint)
+    for (let i=0;i<50;i++) {
+        const sx = (i*137.5 + worldX*0.05) % W;
+        const sy = (i*97.3) % (groundY()-40);
+        const a  = 0.15 + 0.2*Math.sin(Date.now()*0.001 + i);
+        ctx.fillStyle = `rgba(139,172,15,${a})`;
+        ctx.fillRect(~~sx, ~~sy, 1, 1);
     }
 }
 
-const ROCKET_PIXELS = [[0,1,0],[1,1,1],[1,1,1],[0,1,0],[1,0,1]];
-function drawRocket(x, y, s) {
-    ROCKET_PIXELS.forEach((row, ri) => row.forEach((px, ci) => {
-        if (px) {
-            ctx.fillStyle = ri<2 ? '#ff6060' : ri===2 ? '#e0e0e0' : '#ff9900';
-            ctx.fillRect(Math.round(x+ci*4*s), Math.round(y+ri*4*s), Math.round(4*s), Math.round(4*s));
+function drawGround() {
+    const gy = groundY();
+    const off = worldX % T;
+
+    // Top row (brick)
+    for (let x = -off - T; x < W + T; x += T) tile(x, gy, GB.d1, GB.d0, GB.d3);
+
+    // Fill rows
+    for (let row=1; row<4; row++) {
+        const brickOff = row%2 === 0 ? -off : -off + T/2;
+        for (let x = brickOff - T; x < W + T; x += T) {
+            pxl(x, gy+row*T, T, T, row%2===0 ? GB.d2 : GB.d3);
+            ctx.strokeStyle = GB.d3;
+            ctx.lineWidth = 0.5;
+            ctx.strokeRect(x+0.5, gy+row*T+0.5, T-1, T-1);
         }
-    }));
+    }
 }
 
-let jets = [
-    { x: -200, y: 0, speed: 0.8, scale: 1.2, flip: false },
-    { x: 0, y: 0, speed: -0.5, scale: 0.8, flip: true },
-];
-let ufo    = { x: -150, y: 0, speed: 0.35, scale: 1.0 };
-let rocket = { x: 0, y: 0, speedY: -0.6, speedX: 0.15, scale: 1.0 };
-let entitiesReady = false;
-
-let t = 0;
-function draw() {
-    t++;
-    ctx.clearRect(0, 0, W, H);
-
-    if (!entitiesReady) {
-        jets[0].y = H * 0.18; jets[1].x = W + 200; jets[1].y = H * 0.65;
-        ufo.y = H * 0.3; rocket.x = W * 0.7; rocket.y = H + 100;
-        entitiesReady = true;
+function drawPlatforms() {
+    for (const p of platforms) {
+        const sx = screenX(p.x);
+        if (sx + p.w < -T || sx > W + T) continue;
+        for (let x = sx; x < sx+p.w; x += T) tile(x, p.y, GB.d1, GB.d0, GB.d3);
     }
-
-    stars.forEach(s => {
-        s.blink += s.blinkSpeed;
-        const alpha = 0.3 + 0.7 * (Math.sin(s.blink) * 0.5 + 0.5);
-        ctx.fillStyle = `rgba(255,255,255,${alpha})`;
-        ctx.beginPath(); ctx.arc(s.x % W, s.y % H, s.r, 0, Math.PI*2); ctx.fill();
-        s.x -= s.speed; if (s.x < 0) s.x = W;
-    });
-
-    jets.forEach(j => {
-        j.x += j.flip ? -j.speed : j.speed;
-        if (!j.flip && j.x > W+300) j.x = -200;
-        if (j.flip && j.x < -300) j.x = W+200;
-        drawJet(j.x, j.y + Math.sin(t*0.01+j.y)*6, j.scale, j.flip);
-    });
-
-    ufo.x += ufo.speed;
-    if (ufo.x > W+200) ufo.x = -150;
-    drawUFO(ufo.x, ufo.y + Math.sin(t*0.015)*10, ufo.scale);
-
-    rocket.y += rocket.speedY; rocket.x += rocket.speedX;
-    if (rocket.y < -150) { rocket.y = H+100; rocket.x = Math.random()*W; }
-    drawRocket(rocket.x, rocket.y, rocket.scale);
-
-    if (t % 240 < 40) {
-        const prog = (t%240)/40;
-        const mx = W*0.9 - prog*W*0.6, my = H*0.05 + prog*H*0.3;
-        ctx.fillStyle = `rgba(255,200,100,${1-prog})`; ctx.fillRect(Math.round(mx), Math.round(my), 3, 3);
-        ctx.fillStyle = `rgba(255,150,50,${0.5-prog*0.5})`; ctx.fillRect(Math.round(mx+4), Math.round(my+2), 2, 2);
-    }
-    requestAnimationFrame(draw);
 }
-draw();
 
-// ── Parallax ──
-window.addEventListener('scroll', () => {
-    const sy = window.scrollY;
-    document.querySelectorAll('.parallax-layer').forEach(el => {
-        el.style.transform = `translateY(${sy * parseFloat(el.dataset.speed||0.2)}px)`;
-    });
-});
+function drawCoins() {
+    for (const c of coins) {
+        if (c.collected) continue;
+        const cx = screenX(c.x);
+        if (cx < -20 || cx > W+20) continue;
+        const cy = c.y + Math.sin(c.bobT)*3;
+        // Simple pixel coin
+        const cp = [[0,1,1,0],[1,1,1,1],[1,0,1,1],[0,1,1,0]];
+        cp.forEach((row,ri) => row.forEach((p_,ci) => {
+            if(p_) pxl(cx+ci*S-4, cy+ri*S-4, S, S, ri===0||ri===3?GB.d1:GB.d0);
+        }));
+    }
+}
 
-// ── Progress ──
+function drawEnemies() {
+    for (const e of enemies) {
+        if (!e.alive) continue;
+        const sx = screenX(e.x);
+        if (sx < -30 || sx > W+30) continue;
+        const spr = e.frame===0 ? SPR_ENEMY_A : SPR_ENEMY_B;
+        const flip = e.vx < 0;
+        drawSprite(spr, sx-6, e.y, S, [GB.d2, GB.d2, GB.d1, GB.d1, GB.d2], flip);
+    }
+}
+
+function drawPlayer() {
+    const sx = screenX(player.x);
+    const spr = !player.onGround ? SPR_JUMP : (player.walkFrame ? SPR_WALK_B : SPR_WALK_A);
+    const colors = [GB.d0, GB.d0, GB.d0, GB.d1, GB.d1, GB.d0, GB.d2, GB.d2];
+    drawSprite(spr, sx, player.y, S, colors, false);
+}
+
+function drawParticles() {
+    for (const p of particles) {
+        ctx.fillStyle = `rgba(155,188,15,${p.life/25})`;
+        ctx.fillRect(~~p.x, ~~p.y, 3, 3);
+        p.x += p.vx; p.y += p.vy; p.vy += 0.1; p.life--;
+    }
+    particles = particles.filter(p => p.life > 0);
+}
+
+function drawHUD() {
+    if (scoreSmooth < score) scoreSmooth++;
+    ctx.fillStyle = GB.d0;
+    ctx.font = `9px 'Press Start 2P', monospace`;
+    ctx.fillText(`SCORE ${String(scoreSmooth).padStart(5,'0')}`, 14, 22);
+
+    const title = 'DREAM EMU';
+    const tw = ctx.measureText(title).width;
+    ctx.fillText(title, W/2 - tw/2, 22);
+
+    ctx.fillText('P1', W - 30, 22);
+
+    // Tiny "NOW PLAYING" badge
+    ctx.fillStyle = 'rgba(139,172,15,0.18)';
+    ctx.fillRect(W-110, H-32, 104, 20);
+    ctx.fillStyle = GB.d2;
+    ctx.font = `6px 'Press Start 2P', monospace`;
+    ctx.fillText('● NOW PLAYING', W-106, H-18);
+}
+
+function drawOverlay() {
+    // Dark top overlay so page content is readable
+    const ov = ctx.createLinearGradient(0, 0, 0, H);
+    ov.addColorStop(0,   'rgba(0,0,0,0.72)');
+    ov.addColorStop(0.55,'rgba(0,0,0,0.50)');
+    ov.addColorStop(0.80,'rgba(0,0,0,0.22)');
+    ov.addColorStop(1,   'rgba(0,0,0,0.05)');
+    ctx.fillStyle = ov;
+    ctx.fillRect(0, 0, W, H);
+
+    // CRT scanlines
+    ctx.fillStyle = 'rgba(0,0,0,0.04)';
+    for (let y=0; y<H; y+=2) ctx.fillRect(0, y, W, 1);
+}
+
+// ── Main loop ──
+let tick = 0;
+function loop() {
+    tick++;
+    worldX += 1.6;
+
+    if (tick % 40 === 0) generateChunks();
+
+    updatePlayer();
+    runAI(tick);
+    updateCoins(tick);
+    updateEnemies();
+
+    drawBackground();
+    drawPlatforms();
+    drawGround();
+    drawCoins();
+    drawEnemies();
+    drawPlayer();
+    drawParticles();
+    drawOverlay();
+    drawHUD();
+
+    requestAnimationFrame(loop);
+}
+
+resetWorld();
+loop();
+
+// ═══════════════════════════════════════════════
+//  PAGE LOGIC
+// ═══════════════════════════════════════════════
+
+// Progress bar
 const msgs = {
     en: [
         [7,  "7%",  "Send help. And coffee."],
@@ -559,57 +852,53 @@ let currentLang = 'en';
 
 function updateProgress() {
     const pick = msgs[currentLang][Math.floor(Math.random() * msgs[currentLang].length)];
-    document.getElementById('progress-fill').style.width = pick[0] + '%';
+    document.getElementById('progress-fill').style.width = pick[0]+'%';
     document.getElementById('pb-label').textContent = pick[1];
     document.getElementById('pb-caption').textContent = pick[2];
 }
-setTimeout(updateProgress, 500);
+setTimeout(updateProgress, 600);
 
-// ── Lang ──
 function setLang(lang) {
     currentLang = lang;
-    document.querySelectorAll('[data-lang]').forEach(el => {
-        el.classList.toggle('visible', el.dataset.lang === lang);
-    });
-    document.getElementById('ticker-en').style.display = lang === 'en' ? 'block' : 'none';
-    document.getElementById('ticker-pt').style.display = lang === 'pt' ? 'block' : 'none';
-    document.querySelectorAll('.lang-btn').forEach(btn => {
+    document.querySelectorAll('[data-lang]').forEach(el =>
+        el.classList.toggle('visible', el.dataset.lang === lang));
+    document.getElementById('ticker-en').style.display = lang==='en' ? 'block' : 'none';
+    document.getElementById('ticker-pt').style.display = lang==='pt' ? 'block' : 'none';
+    document.querySelectorAll('.lang-btn').forEach(btn =>
         btn.classList.toggle('active',
-            (lang==='en' && btn.textContent.includes('EN')) ||
-            (lang==='pt' && btn.textContent.includes('PT'))
-        );
-    });
+            (lang==='en'&&btn.textContent.includes('EN'))||
+            (lang==='pt'&&btn.textContent.includes('PT'))
+        ));
     document.documentElement.lang = lang;
     updateProgress();
 }
 if ((navigator.language||'').startsWith('pt')) setLang('pt');
 
-// ── Copy ──
 let toastTimer;
 function copyKey(id, btn) {
     navigator.clipboard.writeText(document.getElementById(id).textContent.trim()).then(() => {
-        btn.textContent = '✓'; btn.classList.add('copied');
-        setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        const toast = document.getElementById('toast');
+        btn.textContent='✓'; btn.classList.add('copied');
+        setTimeout(()=>{ btn.textContent='Copy'; btn.classList.remove('copied'); },2000);
+        const toast=document.getElementById('toast');
         toast.classList.add('show');
         clearTimeout(toastTimer);
-        toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
+        toastTimer=setTimeout(()=>toast.classList.remove('show'),2500);
     });
 }
 
-// ── Coin burst ──
-const COINS = ['🪙','💰','⭐','✨','💫'];
+const COINS_EMO=['🪙','💰','⭐','✨','💫'];
 function burstCoins(e) {
-    for (let i = 0; i < 8; i++) {
-        const el = document.createElement('div');
-        el.className = 'coin-burst';
-        el.textContent = COINS[Math.floor(Math.random()*COINS.length)];
-        const angle = Math.random()*Math.PI*2, dist = 60+Math.random()*80;
-        el.style.cssText = `left:${e.clientX}px;top:${e.clientY+window.scrollY}px;--dx:${Math.cos(angle)*dist}px;--dy:${Math.sin(angle)*dist-40}px;animation-delay:${Math.random()*0.1}s;`;
+    for(let i=0;i<8;i++) {
+        const el=document.createElement('div');
+        el.className='coin-burst';
+        el.textContent=COINS_EMO[Math.floor(Math.random()*COINS_EMO.length)];
+        const angle=Math.random()*Math.PI*2, dist=60+Math.random()*80;
+        el.style.cssText=`left:${e.clientX}px;top:${e.clientY+window.scrollY}px;--dx:${Math.cos(angle)*dist}px;--dy:${Math.sin(angle)*dist-40}px;animation-delay:${Math.random()*0.1}s;`;
         document.body.appendChild(el);
-        setTimeout(() => el.remove(), 1200);
+        setTimeout(()=>el.remove(),1200);
     }
 }
 </script>
 </body>
 </html>
+
